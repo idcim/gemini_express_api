@@ -4,8 +4,9 @@ var router = express.Router();
 const multer = require('multer') // v1.0.5
 const upload = multer() // for parsing multipart/form-data
 
-// gemini
+// aiModel
 const gemini = require('../plugins').gemini; 
+const chatgpt = require('../plugins').chatgpt; 
 
 
 router.all('/', function(req, res, next) {
@@ -17,9 +18,26 @@ router.all('/', function(req, res, next) {
 });
 
 router.post('/text', upload.array(), async function(req, res, next) {
+	const type = req.body.type || 'gemini';
+	const model = req.body.model || false;
 	const prompt = req.body.prompt;
-	const result = await gemini.text(prompt); 
-	console.log(result)
+	let result = '';
+	
+	switch (type){
+		case 'chatgpt':
+			// openai
+			result = model? await chatgpt.chat(prompt,model):await chatgpt.chat(prompt); 
+			if (!result) {  
+			    return res.status(500).send('An error occurred'); // 将错误发送给客户端  
+			}
+			break;
+		default:
+			// gemini
+			const history = req.body.history || [];
+			result =await gemini.text(prompt,history); 
+			break;
+	}
+	
 	var data = {
 		'code':2001,
 		'data':result

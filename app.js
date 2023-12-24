@@ -34,7 +34,12 @@ app.use('/v1', require('./routes/v1'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+	var errMsg = {
+		"massges":"啥也不是，散会~~",
+		"code":404
+	}
+	res.json(errMsg);
+  //next(createError(404));
 });
 
 // error handler
