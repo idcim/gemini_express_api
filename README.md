@@ -3,15 +3,17 @@
 ### 1.安装依赖
 
 ```javascript
-	npm install or npm i
+	npm install
 ```
 
 ### 2.添加ENV文件
-添加文件`.env`
-ENV文件内容,填写相应的API KEY
+根目录添加文件`.env`
+ENV文件内容,填写相应的KEY
+
 ```
 GOOGLE_API_KEY = ''
 OPENAI_API_KEY = ''
+OPENAI_API_BASE = ''
 
 PORT = 3000
 ```
